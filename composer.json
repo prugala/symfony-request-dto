@@ -1,0 +1,33 @@
+{
+    "name": "prugala/symfony-request-dto",
+    "type": "library",
+    "description": "Convert Symfony request to DTO object",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "symfony/http-kernel": "^5.4 || ^6.0",
+        "symfony/serializer": "^5.4 || ^6.0",
+        "symfony/validator": "^5.4 || ^6.0",
+        "symfony/dependency-injection": "^5.4 || ^6.0",
+        "symfony/property-access": "^5.4 || ^6.0",
+        "doctrine/annotations": "^1.13",
+        "symfony/cache": "^5.4 || ^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Prugala\\RequestDto\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Prugala\\RequestDto\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "tests": "phpunit"
+    },
+    "prefer-stable": true
+}
