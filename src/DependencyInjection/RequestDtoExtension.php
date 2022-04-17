@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class PrugalaRequestDtoExtension extends Extension
+class RequestDtoExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
