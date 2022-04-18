@@ -1,6 +1,6 @@
 # 
 
-![github actions](https://github.com/prugala/symfony-request-dto/actions/workflows/tests.yml/badge.svg)
+![github actions](https://github.com/prugala/symfony-request-dto/workflows/Tests/badge.svg)
 [![Latest Stable Version](http://poser.pugx.org/prugala/symfony-request-dto/v)](https://packagist.org/packages/prugala/symfony-request-dto)
 [![Total Downloads](http://poser.pugx.org/prugala/symfony-request-dto/downloads)](https://packagist.org/packages/prugala/symfony-request-dto)
 [![License](http://poser.pugx.org/prugala/symfony-request-dto/license)](https://packagist.org/packages/prugala/symfony-request-dto)
