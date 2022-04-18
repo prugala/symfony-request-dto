@@ -1,7 +1,7 @@
 services:
   Prugala\RequestDto\ArgumentResolver\RequestDtoArgumentResolver:
     tags:
-      - { name: controller.argument_value_resolver, priority: 50 }
+      - { name: controller.argument_value_resolver }
 
   Prugala\RequestDto\EventListener\RequestValidationExceptionListener:
     tags:
