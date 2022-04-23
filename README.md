@@ -15,10 +15,26 @@ composer require prugala/symfony-request-dto
 
 ## Usage
 
-1. Create a DTO that implements the interface `rugala\RequestDto\Dto\RequestDtoInterface`
+1. Create a DTO that implements the interface `Prugala\RequestDto\Dto\RequestDtoInterface`
 2. Use your DTO in a Controller e.g.:
-   ![Controller](docs/controller.png)
-3. Done, your JSON (other data are on TODO list) will be mapped on your object
+    ```php 
+    <?php
+   declare(strict_types=1);
+   
+   namespace App\Controller;
+   
+   use Symfony\Component\HttpFoundation\JsonResponse;
+   use App\Dto\ExampleDto;
+   
+   class ExampleController
+   {
+        public function update(ExampleDto $dto): JsonResponse
+        {
+            return new JsonResponse($dto);
+        }
+   }
+    ```
+5. Done, your JSON (other data are on TODO list) will be mapped on your object
 
 ### Validation
 You can use symfony/validator to validate request.  
@@ -26,11 +42,44 @@ If you provide invalid data you will get response 400 with json object with viol
 
 Example:
 1. Create DTO with constraint:
-   ![DTO](docs/dto.png)
+   ```php 
+    <?php
+    declare(strict_types=1);
+
+    namespace App\Dto;
+
+    use Prugala\RequestDto\Dto\RequestDtoInterface;
+    use Symfony\Component\Validator\Constraints as Assert;
+    
+    class ExampleDto implements RequestDtoInterface
+    {
+        public string $name;
+
+        #[Assert\Range(min: 2, max: 10)]
+        public int $position;
+    }
+   ```
 2. Call your action with JSON object:
-   ![JSON](docs/json.png)
+    ```json
+    {
+      "name": "test",
+      "position": 1 
+   }
+    ```
 3. You get response 400 with JSON:
-   ![JSON](docs/json_response.png)
+    ```json 
+   {
+        "errors": [
+            {
+                "message": "This value should be between 2 and 10.",
+                "code": "04b91c99-a946-4221-afc5-e65ebac401eb",
+                "context": {
+                    "field": "position"
+                }
+            }
+        ]
+   }
+    ```
 
 If you want to change response format, overwrite method `formatErrors` in listener `Prugala\RequestDto\EventListener\RequestValidationExceptionListener`
 
