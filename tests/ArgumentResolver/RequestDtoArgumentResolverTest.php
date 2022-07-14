@@ -8,12 +8,8 @@ use Prugala\RequestDto\Exception\RequestValidationException;
 use Prugala\RequestDto\Tests\Resources\ExampleDto;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Validator\Validation;
-use Symfony\Component\Validator\Validator\TraceableValidator;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RequestDtoArgumentResolverTest extends TestCase
 {
@@ -29,6 +25,7 @@ class RequestDtoArgumentResolverTest extends TestCase
         );
 
         $request = new Request();
+        $request->setMethod('POST');
         $request->initialize(
             $request->query->all(),
             $request->request->all(),
@@ -40,6 +37,42 @@ class RequestDtoArgumentResolverTest extends TestCase
                 'name' => 'test',
                 'position' => 2,
             ])
+        );
+
+        $argumentMetadata = new ArgumentMetadata('test', ExampleDto::class, true, false, '');
+
+        $request = $resolver->resolve($request, $argumentMetadata);
+
+        /** @var ExampleDto $dto */
+        $dto = iterator_to_array($request)[0];
+
+        $this->assertSame('test', $dto->name);
+        $this->assertSame(2, $dto->position);
+    }
+
+    public function testResolveCorrectGetRequest(): void
+    {
+        $validator = Validation::createValidatorBuilder()
+            ->enableAnnotationMapping()
+            ->addDefaultDoctrineAnnotationReader()
+            ->getValidator();
+        $resolver = new RequestDtoArgumentResolver(
+            new ObjectNormalizer(),
+            $validator
+        );
+
+        $request = new Request();
+        $request->setMethod('GET');
+        $request->initialize(
+            [
+                'name' => 'test',
+                'position' => 2,
+            ],
+            $request->request->all(),
+            $request->attributes->all(),
+            $request->cookies->all(),
+            $request->files->all(),
+            $request->server->all(),
         );
 
         $argumentMetadata = new ArgumentMetadata('test', ExampleDto::class, true, false, '');
@@ -68,6 +101,7 @@ class RequestDtoArgumentResolverTest extends TestCase
         );
 
         $request = new Request();
+        $request->setMethod('POST');
         $request->initialize(
             $request->query->all(),
             $request->request->all(),
@@ -104,6 +138,7 @@ class RequestDtoArgumentResolverTest extends TestCase
         );
 
         $request = new Request();
+        $request->setMethod('POST');
         $request->initialize(
             $request->query->all(),
             $request->request->all(),
