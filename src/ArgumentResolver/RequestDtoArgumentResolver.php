@@ -31,7 +31,7 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
         if ($request->getMethod() === 'GET') {
             $payload = $request->query->all();
         } else {
-            $payload = $request->getContent();
+            $toTransform = $request->getContent();
             $payload = json_decode($toTransform, true);
         }
 
