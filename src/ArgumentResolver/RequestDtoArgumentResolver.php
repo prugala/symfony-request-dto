@@ -33,7 +33,7 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
         $payload = array_merge($request->query->all(), $payload ?? []);
 
         $request = $this->denormalizer->denormalize($payload, $argument->getType(), null, [
-            AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true
+            AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => false
         ]);
 
         $violations = $this->validator->validate($request);
