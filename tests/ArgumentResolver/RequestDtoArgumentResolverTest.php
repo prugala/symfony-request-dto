@@ -36,6 +36,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             json_encode([
                 'name' => 'test',
                 'position' => 2,
+                'flag' => false
             ])
         );
 
@@ -48,6 +49,7 @@ class RequestDtoArgumentResolverTest extends TestCase
 
         $this->assertSame('test', $dto->name);
         $this->assertSame(2, $dto->position);
+        $this->assertSame(false, $dto->flag);
     }
 
     public function testResolveCorrectGetRequest(): void
@@ -67,6 +69,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             [
                 'name' => 'test',
                 'position' => 2,
+                'flag' => 'false'
             ],
             $request->request->all(),
             $request->attributes->all(),
@@ -84,6 +87,7 @@ class RequestDtoArgumentResolverTest extends TestCase
 
         $this->assertSame('test', $dto->name);
         $this->assertSame(2, $dto->position);
+        $this->assertSame(false, $dto->flag);
     }
 
     public function testResolveRequestExpectException(): void

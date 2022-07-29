@@ -12,4 +12,6 @@ class ExampleDto implements RequestDtoInterface
 
     #[Assert\Range(min: 2, max: 10)]
     public int $position;
+
+    public bool $flag;
 }
