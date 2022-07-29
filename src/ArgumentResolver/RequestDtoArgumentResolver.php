@@ -28,12 +28,9 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        if ($request->getMethod() === 'GET') {
-            $payload = $request->query->all();
-        } else {
-            $toTransform = $request->getContent();
-            $payload = json_decode($toTransform, true);
-        }
+        $toTransform = $request->getContent();
+        $payload = json_decode($toTransform, true);
+        $payload = array_merge($request->query->all(), $payload);
 
         $request = $this->denormalizer->denormalize($payload, $argument->getType(), null, [
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true
