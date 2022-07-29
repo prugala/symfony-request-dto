@@ -20,7 +20,6 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            new ObjectNormalizer(),
             $validator
         );
 
@@ -36,6 +35,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             json_encode([
                 'name' => 'test',
                 'position' => 2,
+                'flag' => false
             ])
         );
 
@@ -48,6 +48,7 @@ class RequestDtoArgumentResolverTest extends TestCase
 
         $this->assertSame('test', $dto->name);
         $this->assertSame(2, $dto->position);
+        $this->assertSame(false, $dto->flag);
     }
 
     public function testResolveCorrectGetRequest(): void
@@ -57,7 +58,6 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            new ObjectNormalizer(),
             $validator
         );
 
@@ -67,6 +67,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             [
                 'name' => 'test',
                 'position' => 2,
+                'flag' => 'false'
             ],
             $request->request->all(),
             $request->attributes->all(),
@@ -84,6 +85,155 @@ class RequestDtoArgumentResolverTest extends TestCase
 
         $this->assertSame('test', $dto->name);
         $this->assertSame(2, $dto->position);
+        $this->assertSame(false, $dto->flag);
+    }
+
+    public function testResolveStringTrueBooleanGetRequest(): void
+    {
+        $validator = Validation::createValidatorBuilder()
+            ->enableAnnotationMapping()
+            ->addDefaultDoctrineAnnotationReader()
+            ->getValidator();
+        $resolver = new RequestDtoArgumentResolver(
+            $validator
+        );
+
+        $request = new Request();
+        $request->setMethod('GET');
+        $request->initialize(
+            [
+                'name' => 'test',
+                'position' => 2,
+                'flag' => 'true'
+            ],
+            $request->request->all(),
+            $request->attributes->all(),
+            $request->cookies->all(),
+            $request->files->all(),
+            $request->server->all(),
+        );
+
+        $argumentMetadata = new ArgumentMetadata('test', ExampleDto::class, true, false, '');
+
+        $request = $resolver->resolve($request, $argumentMetadata);
+
+        /** @var ExampleDto $dto */
+        $dto = iterator_to_array($request)[0];
+
+        $this->assertSame('test', $dto->name);
+        $this->assertSame(2, $dto->position);
+        $this->assertSame(true, $dto->flag);
+    }
+
+    public function testResolveStringFalseBooleanGetRequest(): void
+    {
+        $validator = Validation::createValidatorBuilder()
+            ->enableAnnotationMapping()
+            ->addDefaultDoctrineAnnotationReader()
+            ->getValidator();
+        $resolver = new RequestDtoArgumentResolver(
+            $validator
+        );
+
+        $request = new Request();
+        $request->setMethod('GET');
+        $request->initialize(
+            [
+                'name' => 'test',
+                'position' => 2,
+                'flag' => 'false'
+            ],
+            $request->request->all(),
+            $request->attributes->all(),
+            $request->cookies->all(),
+            $request->files->all(),
+            $request->server->all(),
+        );
+
+        $argumentMetadata = new ArgumentMetadata('test', ExampleDto::class, true, false, '');
+
+        $request = $resolver->resolve($request, $argumentMetadata);
+
+        /** @var ExampleDto $dto */
+        $dto = iterator_to_array($request)[0];
+
+        $this->assertSame('test', $dto->name);
+        $this->assertSame(2, $dto->position);
+        $this->assertSame(false, $dto->flag);
+    }
+
+    public function testResolveNumberTrueBooleanGetRequest(): void
+    {
+        $validator = Validation::createValidatorBuilder()
+            ->enableAnnotationMapping()
+            ->addDefaultDoctrineAnnotationReader()
+            ->getValidator();
+        $resolver = new RequestDtoArgumentResolver(
+            $validator
+        );
+
+        $request = new Request();
+        $request->setMethod('GET');
+        $request->initialize(
+            [
+                'name' => 'test',
+                'position' => 2,
+                'flag' => 1
+            ],
+            $request->request->all(),
+            $request->attributes->all(),
+            $request->cookies->all(),
+            $request->files->all(),
+            $request->server->all(),
+        );
+
+        $argumentMetadata = new ArgumentMetadata('test', ExampleDto::class, true, false, '');
+
+        $request = $resolver->resolve($request, $argumentMetadata);
+
+        /** @var ExampleDto $dto */
+        $dto = iterator_to_array($request)[0];
+
+        $this->assertSame('test', $dto->name);
+        $this->assertSame(2, $dto->position);
+        $this->assertSame(true, $dto->flag);
+    }
+
+    public function testResolveNumberFalseBooleanGetRequest(): void
+    {
+        $validator = Validation::createValidatorBuilder()
+            ->enableAnnotationMapping()
+            ->addDefaultDoctrineAnnotationReader()
+            ->getValidator();
+        $resolver = new RequestDtoArgumentResolver(
+            $validator
+        );
+
+        $request = new Request();
+        $request->setMethod('GET');
+        $request->initialize(
+            [
+                'name' => 'test',
+                'position' => 2,
+                'flag' => 0
+            ],
+            $request->request->all(),
+            $request->attributes->all(),
+            $request->cookies->all(),
+            $request->files->all(),
+            $request->server->all(),
+        );
+
+        $argumentMetadata = new ArgumentMetadata('test', ExampleDto::class, true, false, '');
+
+        $request = $resolver->resolve($request, $argumentMetadata);
+
+        /** @var ExampleDto $dto */
+        $dto = iterator_to_array($request)[0];
+
+        $this->assertSame('test', $dto->name);
+        $this->assertSame(2, $dto->position);
+        $this->assertSame(false, $dto->flag);
     }
 
     public function testResolveRequestExpectException(): void
@@ -96,7 +246,6 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->getValidator();
 
         $resolver = new RequestDtoArgumentResolver(
-            new ObjectNormalizer(),
             $validator
         );
 
@@ -133,7 +282,6 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->getValidator();
 
         $resolver = new RequestDtoArgumentResolver(
-            new ObjectNormalizer(),
             $validator
         );
 
