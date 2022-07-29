@@ -30,7 +30,7 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
     {
         $toTransform = $request->getContent();
         $payload = json_decode($toTransform, true);
-        $payload = array_merge($request->query->all(), $payload);
+        $payload = array_merge($request->query->all(), $payload ?? []);
 
         $request = $this->denormalizer->denormalize($payload, $argument->getType(), null, [
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true
