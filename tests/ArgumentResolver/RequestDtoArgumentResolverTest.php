@@ -20,7 +20,6 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            new ObjectNormalizer(),
             $validator
         );
 
