@@ -9,15 +9,12 @@ use Prugala\RequestDto\Serializer\Normalizer\CustomObjectNormalizer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
 class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
 {
@@ -37,8 +34,14 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
         $toTransform = $request->getContent();
         $payload = json_decode($toTransform, true);
         $payload = array_merge($request->query->all(), $payload ?? []);
+        $headers = $request->headers->all();
+        $headers = array_combine(
+            array_map(fn($name) => str_replace('-', '_', $name), array_keys($headers)),
+            array_map(fn($value) => is_array($value) ? reset($value) : $value, $headers)
+        );
+        $payload = array_merge($headers, $payload);
 
-        $serializer = new Serializer([new CustomObjectNormalizer()], [new JsonEncoder(), new XmlEncoder()]);
+        $serializer = new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()]);
         $request = $serializer->denormalize($payload, $argument->getType(), null, [
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true
         ]);

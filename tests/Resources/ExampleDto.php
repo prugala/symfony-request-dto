@@ -8,10 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ExampleDto implements RequestDtoInterface
 {
-    public string $name;
+    public ?string $name = null;
 
     #[Assert\Range(min: 2, max: 10)]
-    public int $position;
+    public ?int $position = null;
 
-    public bool $flag;
+    public bool $flag = false;
 }
