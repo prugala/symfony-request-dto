@@ -328,9 +328,7 @@ class RequestDtoArgumentResolverTest extends TestCase
         );
 
         $request = new Request();
-        $request->headers->add([
-            'position' => 1,
-        ]);
+        $request->headers->set('position', 2);
         $request->setMethod('GET');
         $request->initialize(
             [
