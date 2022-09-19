@@ -35,7 +35,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             json_encode([
                 'name' => 'test',
                 'position' => 2,
-                'flag' => false
+                'flag' => false,
             ])
         );
 
@@ -67,7 +67,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             [
                 'name' => 'test',
                 'position' => 2,
-                'flag' => 'false'
+                'flag' => 'false',
             ],
             $request->request->all(),
             $request->attributes->all(),
@@ -104,7 +104,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             [
                 'name' => 'test',
                 'position' => 2,
-                'flag' => 'true'
+                'flag' => 'true',
             ],
             $request->request->all(),
             $request->attributes->all(),
@@ -141,7 +141,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             [
                 'name' => 'test',
                 'position' => 2,
-                'flag' => 'false'
+                'flag' => 'false',
             ],
             $request->request->all(),
             $request->attributes->all(),
@@ -178,7 +178,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             [
                 'name' => 'test',
                 'position' => 2,
-                'flag' => 1
+                'flag' => 1,
             ],
             $request->request->all(),
             $request->attributes->all(),
@@ -215,7 +215,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             [
                 'name' => 'test',
                 'position' => 2,
-                'flag' => 0
+                'flag' => 0,
             ],
             $request->request->all(),
             $request->attributes->all(),
@@ -315,5 +315,44 @@ class RequestDtoArgumentResolverTest extends TestCase
 
             throw $exception;
         }
+    }
+
+    public function testResolveValueFromHeader(): void
+    {
+        $validator = Validation::createValidatorBuilder()
+            ->enableAnnotationMapping()
+            ->addDefaultDoctrineAnnotationReader()
+            ->getValidator();
+        $resolver = new RequestDtoArgumentResolver(
+            $validator
+        );
+
+        $request = new Request();
+        $request->headers->add([
+            'position' => 1,
+        ]);
+        $request->setMethod('GET');
+        $request->initialize(
+            [
+                'name' => 'test',
+                'flag' => 0,
+            ],
+            $request->request->all(),
+            $request->attributes->all(),
+            $request->cookies->all(),
+            $request->files->all(),
+            $request->server->all(),
+        );
+
+        $argumentMetadata = new ArgumentMetadata('test', ExampleDto::class, true, false, '');
+
+        $request = $resolver->resolve($request, $argumentMetadata);
+
+        /** @var ExampleDto $dto */
+        $dto = iterator_to_array($request)[0];
+
+        $this->assertSame('test', $dto->name);
+        $this->assertSame(2, $dto->position);
+        $this->assertSame(false, $dto->flag);
     }
 }

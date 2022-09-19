@@ -13,6 +13,16 @@ Map request on your DTO object with zero configuration.
 composer require prugala/symfony-request-dto
 ```
 
+## Support
+
+- Content (JSON) data 
+- Query parameters 
+- Headers
+
+#### TODO
+- Form data
+- Upload files
+
 ## Usage
 
 1. Create a DTO that implements the interface `Prugala\RequestDto\Dto\RequestDtoInterface`
@@ -83,20 +93,11 @@ Example:
 
 If you want to change response format, overwrite method `formatErrors` in listener `Prugala\RequestDto\EventListener\RequestValidationExceptionListener`
 
-## Change log
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
 ## Testing
 
 ```shell
 composer tests
 ```
-
-## TODO
-- add support for form data
-- add support for query data
-- add support for upload files
 
 ## Contributing
 
