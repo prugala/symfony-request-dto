@@ -41,7 +41,6 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
         );
         $payload = array_merge($headers, $payload);
 
-        var_dump($payload);
         $serializer = new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()]);
         $request = $serializer->denormalize($payload, $argument->getType(), null, [
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true

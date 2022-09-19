@@ -328,7 +328,7 @@ class RequestDtoArgumentResolverTest extends TestCase
         );
 
         $request = new Request();
-        $request->headers->set('position', 2);
+        $request->headers->set('position', '2');
         $request->setMethod('GET');
         $request->initialize(
             [
@@ -339,7 +339,7 @@ class RequestDtoArgumentResolverTest extends TestCase
             $request->attributes->all(),
             $request->cookies->all(),
             $request->files->all(),
-            $request->server->all(),
+            ['HTTP_position' => '2'],
         );
 
         $argumentMetadata = new ArgumentMetadata('test', ExampleDto::class, true, false, '');
