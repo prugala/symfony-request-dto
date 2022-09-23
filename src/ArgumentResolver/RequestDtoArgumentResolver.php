@@ -31,15 +31,15 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $toTransform = $request->getContent();
-        $payload = json_decode($toTransform, true);
-        $payload = array_merge($request->query->all(), $payload ?? []);
         $headers = $request->headers->all();
         $headers = array_combine(
             array_map(fn($name) => str_replace('-', '_', $name), array_keys($headers)),
             array_map(fn($value) => is_array($value) ? reset($value) : $value, $headers)
         );
-        $payload = array_merge($headers, $payload);
+
+        $content = $request->getContent();
+        $contentDecoded = json_decode($content ?? '', true) ?? [];
+        $payload = array_merge($request->request->all(), $request->query->all(), $request->files->all(), $headers, $contentDecoded);
 
         $serializer = new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()]);
         $request = $serializer->denormalize($payload, $argument->getType(), null, [
