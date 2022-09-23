@@ -15,13 +15,14 @@ composer require prugala/symfony-request-dto
 
 ## Support
 
-- Content (JSON) data 
+- Content data
+- Form-data
 - Query parameters 
+- Uploaded files
 - Headers
 
 #### TODO
-- Form data
-- Upload files
+- Configurable normalizers and encoders
 
 ## Usage
 
@@ -45,6 +46,15 @@ composer require prugala/symfony-request-dto
    }
     ```
 5. Done, your JSON (other data are on TODO list) will be mapped on your object
+
+### Support for uploaded files
+Bundle has support for uploaded files.
+```php
+    #[Assert\File(maxSize: 1000, mimeTypes: 'text/plain')]
+    public ?UploadedFile $exampleFile = null;
+```
+
+Send request with form-data with field `exampleFile` and you will have access to your file in object property.
 
 ### Validation
 You can use symfony/validator to validate request.  
