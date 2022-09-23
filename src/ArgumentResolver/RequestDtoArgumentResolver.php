@@ -37,7 +37,9 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
             array_map(fn($value) => is_array($value) ? reset($value) : $value, $headers)
         );
 
-        $payload = array_merge($request->request->all(), $request->query->all(), $request->files->all(), $headers);
+        $content = $request->getContent();
+        $contentDecoded = json_decode($toTransform ?? '', true);
+        $payload = array_merge($request->request->all(), $request->query->all(), $request->files->all(), $headers, $contentDecoded);
 
         $serializer = new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()]);
         $request = $serializer->denormalize($payload, $argument->getType(), null, [
