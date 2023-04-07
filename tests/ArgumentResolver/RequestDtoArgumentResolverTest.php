@@ -9,6 +9,7 @@ use Prugala\RequestDto\Tests\Resources\ExampleDto;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validation;
 
 class RequestDtoArgumentResolverTest extends TestCase
@@ -20,7 +21,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer()
         );
 
         $request = new Request();
@@ -58,7 +60,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer()
         );
 
         $request = new Request();
@@ -95,7 +98,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer()
         );
 
         $request = new Request();
@@ -132,7 +136,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer()
         );
 
         $request = new Request();
@@ -169,7 +174,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer()
         );
 
         $request = new Request();
@@ -206,7 +212,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer()
         );
 
         $request = new Request();
@@ -246,7 +253,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->getValidator();
 
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer()
         );
 
         $request = new Request();
@@ -282,7 +290,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->getValidator();
 
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer()
         );
 
         $request = new Request();
@@ -324,7 +333,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer()
         );
 
         $request = new Request();
