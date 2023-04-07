@@ -5,10 +5,15 @@ namespace Prugala\RequestDto\Tests\ArgumentResolver;
 use Prugala\RequestDto\ArgumentResolver\RequestDtoArgumentResolver;
 use PHPUnit\Framework\TestCase;
 use Prugala\RequestDto\Exception\RequestValidationException;
+use Prugala\RequestDto\Serializer\Normalizer\CustomObjectNormalizer;
 use Prugala\RequestDto\Tests\Resources\ExampleDto;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validation;
 
 class RequestDtoArgumentResolverTest extends TestCase
@@ -20,7 +25,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()])
         );
 
         $request = new Request();
@@ -58,7 +64,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()])
         );
 
         $request = new Request();
@@ -95,7 +102,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()])
         );
 
         $request = new Request();
@@ -132,7 +140,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()])
         );
 
         $request = new Request();
@@ -169,7 +178,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()])
         );
 
         $request = new Request();
@@ -206,7 +216,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()])
         );
 
         $request = new Request();
@@ -246,7 +257,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->getValidator();
 
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()])
         );
 
         $request = new Request();
@@ -282,7 +294,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->getValidator();
 
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()])
         );
 
         $request = new Request();
@@ -324,7 +337,8 @@ class RequestDtoArgumentResolverTest extends TestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
         $resolver = new RequestDtoArgumentResolver(
-            $validator
+            $validator,
+            new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()])
         );
 
         $request = new Request();

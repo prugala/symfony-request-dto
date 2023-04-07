@@ -13,13 +13,15 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
 class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
 {
     public function __construct(
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private SerializerInterface $serializer
     )
     {
     }
@@ -40,9 +42,7 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
         $content = $request->getContent();
         $contentDecoded = json_decode($content ?? '', true) ?? [];
         $payload = array_merge($request->request->all(), $request->query->all(), $request->files->all(), $headers, $contentDecoded);
-
-        $serializer = new Serializer([new CustomObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()]);
-        $request = $serializer->denormalize($payload, $argument->getType(), null, [
+        $request = $this->serializer->denormalize($payload, $argument->getType(), null, [
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true
         ]);
 
