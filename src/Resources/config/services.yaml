@@ -9,3 +9,7 @@ services:
   Prugala\RequestDto\EventListener\RequestValidationExceptionListener:
     tags:
       - { name: kernel.event_listener, event: kernel.exception }
+
+  Prugala\RequestDto\Serializer\Normalizer\CustomObjectNormalizer:
+      tags:
+          - { name: serializer.normalizer }
