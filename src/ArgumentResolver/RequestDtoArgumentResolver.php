@@ -5,17 +5,12 @@ namespace Prugala\RequestDto\ArgumentResolver;
 
 use Prugala\RequestDto\Dto\RequestDtoInterface;
 use Prugala\RequestDto\Exception\RequestValidationException;
-use Prugala\RequestDto\Serializer\Normalizer\CustomObjectNormalizer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
 class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
 {
