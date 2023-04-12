@@ -33,8 +33,8 @@ class CustomObjectNormalizer extends ObjectNormalizer
 
     public function supportsNormalization($data, $format = null): bool
     {
-        if ($value) {
-            $boolValue = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        if ($data) {
+            $boolValue = filter_var($data, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
             if (!is_null($boolValue)) {
                 return true;
