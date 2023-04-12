@@ -18,7 +18,6 @@ class CustomObjectNormalizer extends ObjectNormalizer
     {
         parent::__construct($classMetadataFactory, $nameConverter ?? new CamelCaseToSnakeCaseNameConverter(), $propertyAccessor, $propertyTypeExtractor, $classDiscriminatorResolver, $objectClassResolver, $defaultContext);
     }
-
     protected function setAttributeValue(object $object, string $attribute, mixed $value, string $format = null, array $context = []): void
     {
         if ($value) {
@@ -30,5 +29,18 @@ class CustomObjectNormalizer extends ObjectNormalizer
         }
 
         parent::setAttributeValue($object, $attribute, $value, $format, $context);
+    }
+
+    public function supportsNormalization($data, $format = null): bool
+    {
+        if ($value) {
+            $boolValue = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+
+            if (!is_null($boolValue)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
