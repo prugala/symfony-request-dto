@@ -10,4 +10,6 @@ services:
     tags:
       - { name: kernel.event_listener, event: kernel.exception }
 
-  Prugala\RequestDto\Serializer\Normalizer\CustomNormalizer: ~
+  Prugala\RequestDto\Serializer\Normalizer\CustomNormalizer:
+    tags:
+        - { name: serializer.normalizer }
