@@ -10,7 +10,7 @@
         "symfony/validator": "^5.4 || ^6.0",
         "symfony/dependency-injection": "^5.4 || ^6.0",
         "symfony/property-access": "^5.4 || ^6.0",
-        "doctrine/annotations": "^1.13",
+        "doctrine/annotations": "^1.13 || ^2.0",
         "symfony/cache": "^5.4 || ^6.0"
     },
     "require-dev": {
