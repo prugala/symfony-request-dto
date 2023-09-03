@@ -2,6 +2,8 @@
 
 namespace Prugala\RequestDto\Serializer\Normalizer;
 
+use Prugala\RequestDto\Dto\RequestDtoInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorResolverInterface;
@@ -32,4 +34,12 @@ class CustomNormalizer extends ObjectNormalizer
     {
         return false;
     }
+
+   public function supportsDenormalization(mixed $data, string $type, string $format = null){
+        if (false === parent::supportsDenormalization($data, $type, $format)) {
+            return false;
+        }
+
+       return is_a($type, Request::class, true) || is_a($type, RequestDtoInterface::class, true);
+   }
 }
