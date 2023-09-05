@@ -5,18 +5,21 @@ namespace Prugala\RequestDto\ArgumentResolver;
 
 use Prugala\RequestDto\Dto\RequestDtoInterface;
 use Prugala\RequestDto\Exception\RequestValidationException;
+use Prugala\RequestDto\Serializer\Normalizer\CustomNormalizer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
 {
     public function __construct(
-        private ValidatorInterface $validator,
-        private SerializerInterface $serializer
+        private ValidatorInterface $validator
     )
     {
     }
@@ -37,7 +40,9 @@ class RequestDtoArgumentResolver implements ArgumentValueResolverInterface
         $content = $request->getContent();
         $contentDecoded = json_decode($content ?? '', true) ?? [];
         $payload = array_merge($request->request->all(), $request->query->all(), $request->files->all(), $headers, $contentDecoded);
-        $request = $this->serializer->denormalize($payload, $argument->getType(), null, [
+        $serializer = new Serializer([new CustomNormalizer(null, new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder(), new XmlEncoder()]);
+
+        $request = $serializer->denormalize($payload, $argument->getType(), null, [
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true
         ]);
 
